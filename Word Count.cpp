@@ -5,7 +5,7 @@
 // 禁用特定的警告  
 #pragma warning(disable: 4996)  
 
-// 函数声明  
+// 函数声明  //测试 
 int count_characters(FILE* file);
 int count_words(FILE* file);
 
