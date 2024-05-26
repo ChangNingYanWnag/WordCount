@@ -2,10 +2,10 @@
 #include <stdlib.h>  
 #include <ctype.h>  
 
-// ½ûÓÃÌØ¶¨µÄ¾¯¸æ  
+
 #pragma warning(disable: 4996)  
 
-// º¯ÊıÉùÃ÷  //²âÊÔ 
+// å‡½æ•°å£°æ˜  //æµ‹è¯• 
 int count_characters(FILE* file);
 int count_words(FILE* file);
 
@@ -19,77 +19,68 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    // ¼ì²é²ÎÊıÊÇ·ñÒÔ '-' ¿ªÍ·  
     if (argv[1][0] != '-') {
         printf("Invalid parameter format: %s\n", argv[1]);
         return 1;
     }
 
-    // ÌáÈ¡²ÎÊı-c»ò-w  
+    // æå–å‚æ•°-cæˆ–-w  
     parameter = argv[1][1];
-    filename = argv[2];     // ÌáÈ¡ÎÄ¼şÃû  
+    filename = argv[2];     // æå–æ–‡ä»¶å  
 
-    // ´ò¿ªÎÄ¼ş  
+    // æ‰“å¼€æ–‡ä»¶  
     file = fopen(filename, "r");
     if (file == NULL) {
         perror("Error opening file");
         return 1;
     }
 
-    // ¸ù¾İ²ÎÊıÖ´ĞĞ²»Í¬µÄÍ³¼Æ  
     if (parameter == 'c') {
         int characters = count_characters(file);
-        printf("×Ö·ûÊı£º%d\n", characters);
+        printf("å­—ç¬¦æ•°ï¼š%d\n", characters);
     }
     else if (parameter == 'w') {
         int words = count_words(file);
-        printf("µ¥´ÊÊı£º%d\n", words);
+        printf("å•è¯æ•°ï¼š%d\n", words);
     }
     else {
         printf("Invalid parameter: %c\n", parameter);
     }
-
-    // ¹Ø±ÕÎÄ¼ş  
-    fclose(file);
+  fclose(file);   
     return 0;
 }
 
-// Í³¼Æ×Ö·ûÊıµÄº¯Êı  
+// ç»Ÿè®¡å­—ç¬¦æ•°çš„å‡½æ•°  
 int count_characters(FILE* file) {
     int count = 0;
     char ch;
-
-    while ((ch = fgetc(file)) != EOF) {
-        count++;
+        
+            while ((ch = fgetc(file)) != EOF) {
+                count++;
     }
-
-    // ÒÆ³ırewindµ÷ÓÃ£¬ÒòÎªºóĞø²»ÔÙĞèÒª¶ÁÈ¡¸ÃÎÄ¼ş  
-    // rewind(file);  1
+        
+    // ç§»é™¤rewindè°ƒç”¨ï¼Œå› ä¸ºåç»­ä¸å†éœ€è¦è¯»å–è¯¥æ–‡ä»¶  
+                // rewind(file);  1
 
     return count;
-}
+}            
 
-// Í³¼Æµ¥´ÊÊıµÄº¯Êı  
+// ç»Ÿè®¡å•è¯æ•°çš„å‡½æ•°  
 int count_words(FILE* file) {
     int count = 0;
     int in_word = 0;
     char ch;
 
-    while ((ch = fgetc(file)) != EOF) {
-        // Èç¹ûÓöµ½¿Õ¸ñ¡¢¶ººÅ»ò»»ĞĞ·û£¬²¢ÇÒµ±Ç°ÔÚµ¥´ÊÖĞ£¬ÔòÔö¼Óµ¥´Ê¼ÆÊı  
-        if ((isspace(ch) || ch == ',') && in_word) {
+            while ((ch = fgetc(file)) != EOF) {
+
+   if ((isspace(ch) || ch == ',') && in_word) {
             count++;
             in_word = 0;
-        }
-        // Èç¹ûÓöµ½·Ç¿Õ¸ñ×Ö·û£¬Ôò½øÈëµ¥´Ê×´Ì¬  
-        else if (!isspace(ch) && ch != ',') {
-            in_word = 1;
-        }
+            }
+        // å¦‚æœé‡åˆ°éç©ºæ ¼å­—ç¬¦ï¼Œåˆ™è¿›å…¥å•è¯çŠ¶æ€  
+            else if (!isspace(ch) && ch != ',')           
+                in_word = 1;
+      }
     }
-
-    // ÒÆ³ırewindµ÷ÓÃ£¬ÒòÎªºóĞø²»ÔÙĞèÒª¶ÁÈ¡¸ÃÎÄ¼ş  
-    // ×îºóÒ»¸öµ¥´ÊÒÑ¾­ÔÚÑ­»·ÖĞ¼ÆÊı  
-    // rewind(file);  
-
     return count;
 }
